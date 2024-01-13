@@ -17,7 +17,7 @@ class _CartPageState extends State<CartPage> {
   
   @override
   Widget build(BuildContext context) {
-    final buyerRef = database.child('accounts/buyer/');
+    final buyerRef = database.child('accounts/buyers/');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cart')
