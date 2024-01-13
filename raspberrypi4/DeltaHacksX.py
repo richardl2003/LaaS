@@ -80,10 +80,12 @@ def play_sound(sound):
 dict = {
     "cold": "ice-ice-baby.mp3",
     #"neutral": "",
-    "hot": ["hot-hot-hot.mp3", "ah-thats-hot.mp3"],
+    "hot": ["ah-thats-hot.mp3"],
     "open": "fbi-open-up.mp3"
     #"close": ""
 }
+
+door_toggle = 0
 
 try:
     while True:
@@ -93,44 +95,44 @@ try:
         isOpen = db.child(collection_name).child("isOpen").get().val()
         isFull = db.child(collection_name).child("isFull").get().val()
         
-        played_toggle = 0
-        
-        if isOpen == 1:
-            open_Box()
-            sound = dict["open"]
-            if isinstance(sound, list):
-                sound = random.choice(sound)
-                if played_toggle == 0:
-                    play_sound(sound)
-                    play_toggle = 1
-            
-            #sleep(0.5)
-            
-        elif isOpen == 0:
-            close_Box()
-            #sleep(0.5)
-            
-        print("lol")
-        
         if isFull == 1:
-            print("hi")
-            if temperature == -1:
-                blue_LED()
-                sound = dict["cold"]
-                play_sound(sound)
-            elif temperature == 0:
-                green_LED()
-            elif temperature == 1:
-                red_LED()
-                sound = random.choice(dict["hot"])
-                play_sound(sound)
-            #sleep(0.5)
+            if isOpen == 1:
+                if door_toggle == 0:
+                    door_toggle = 1
+                    open_Box()
+                    sleep(1)
+                    sound = dict["open"]
+                    play_sound(sound)
+                        
+            elif isOpen == 0:
+                close_Box()
+                sleep(1)
+                door_toggle = 0
                 
         elif isFull == 0:
-            power_Off_LED()
-            #sleep(0.5)
+            if isOpen == 1:
+                if door_toggle == 0:
+                    door_toggle = 1
+                    open_Box()
+                    sleep(1)
+                    if temperature == -1:
+                        blue_LED()
+                        sound = dict["cold"]
+                        play_sound(sound)
+                    elif temperature == 0:
+                        green_LED()
+                    elif temperature == 1:
+                        red_LED()
+                        sound = random.choice(dict["hot"])
+                        play_sound(sound)
+                        
+            elif isOpen == 0:
+                door_toggle = 0
+                close_Box()
+                sleep(1)
+                power_Off_LED()
             
-        sleep(0.5)
+        sleep(1)
 
 except KeyboardInterrupt: 		
     pass
