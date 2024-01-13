@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class UserModel extends ChangeNotifier{
   String username = '';
+  String password = '';
   String typeOfUser = '';
 
   void editUsername(String user) {
@@ -9,8 +10,14 @@ class UserModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  void editType(String type) {
+  void editPassword(String pass) {
+    password = pass;
+    notifyListeners();
+  }
+
+  void editTypeOfUser(String type) {
     typeOfUser = type;
+    notifyListeners();
   }
 
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'seller_status_page.dart';
 import 'package:provider/provider.dart';
 import '../models/user_model.dart';
-import 'intro_screen.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -53,7 +53,8 @@ class _LoginPageState extends State<LoginPage> {
                 onTap: () {
                   if (_username.text.isNotEmpty && _password.text.isNotEmpty) {
                     Provider.of<UserModel>(context, listen: false).editUsername(_username.text);
-                    Provider.of<UserModel>(context, listen: false).editType("buyer");
+                    Provider.of<UserModel>(context, listen: false).editPassword(_password.text);
+                    Provider.of<UserModel>(context, listen: false).editTypeOfUser("buyer");
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -91,12 +92,13 @@ class _LoginPageState extends State<LoginPage> {
                 onTap: () {
                   if (_username.text.isNotEmpty && _password.text.isNotEmpty) {
                     Provider.of<UserModel>(context, listen: false).editUsername(_username.text);
-                    Provider.of<UserModel>(context, listen: false).editType("seller");
+                    Provider.of<UserModel>(context, listen: false).editPassword(_password.text);
+                    Provider.of<UserModel>(context, listen: false).editTypeOfUser("seller");
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const IntroPage();
+                          return const SellerStatusPage();
                         }
                       )
                     );

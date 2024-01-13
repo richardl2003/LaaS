@@ -4,6 +4,7 @@ import 'package:lock/models/cart_model.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user_model.dart';
+import 'dart:math';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -88,20 +89,36 @@ class _CartPageState extends State<CartPage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        var type = Provider.of<UserModel>(context, listen: false).typeOfUser;
                         var name = Provider.of<UserModel>(context, listen: false).username;
+                        var pass = Provider.of<UserModel>(context, listen: false).password;
+                        var type = Provider.of<UserModel>(context, listen: false).typeOfUser;
                         var cart = Provider.of<CartModel>(context, listen: false).cartItems;
                         var orders = [];
                         cart.forEach((item) => orders.add(item[0]));
+                        var id = Random().nextInt(1000);
                         try {
                           await buyerRef.set({
-                            'password': type,
-                            'user': name,
-                            'order': orders
+                            id: {
+                              'user': name,
+                              'type': type,
+                              'password': pass,
+                              'order': orders
+                            }
                           });
                         } catch (e) {
                           print("error");
                         }
+
+                        // if (context.mounted) {
+                        //   Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder:(context) {
+                        //         return const StatusPage();
+                        //       },
+                        //     )
+                        //   );
+                        // }
                       },
                       child: Container(
                         decoration: BoxDecoration(
