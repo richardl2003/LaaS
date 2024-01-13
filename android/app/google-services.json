@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "926511270144",
+    "firebase_url": "https://bitebox-79d22-default-rtdb.firebaseio.com",
+    "project_id": "bitebox-79d22",
+    "storage_bucket": "bitebox-79d22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926511270144:android:8f8099a64a771bf5a34be5",
+        "android_client_info": {
+          "package_name": "com.example.lock"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByEF71yz7oW7I-4GyoKPzzCUNHb9SD-ic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
