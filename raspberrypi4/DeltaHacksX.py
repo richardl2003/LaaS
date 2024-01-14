@@ -59,7 +59,7 @@ def power_Off_LED():
     green_pwm.ChangeDutyCycle(0)
     
 def open_Box():
-    servo1_pwm.ChangeDutyCycle(7.5)
+    servo1_pwm.ChangeDutyCycle(12.5)
 
 def close_Box():
     servo1_pwm.ChangeDutyCycle(2.5)
