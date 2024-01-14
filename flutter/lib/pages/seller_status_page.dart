@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import '../pages/close_box_page.dart';
 
 import '../components/biometric_auth.dart';
 
@@ -16,29 +17,73 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
   final database = FirebaseDatabase.instance.ref();
 
   bool isUserAuthenticated = false;
+  bool isBoxOpen = false;
   List<bool> hasBeenFulfilled = List.generate(25, (index) => false);
+
   void onAuthenticationComplete(bool isAuthenticated) {
     setState(() {
       isUserAuthenticated = isAuthenticated;
     });
-    
-    if (isAuthenticated) {
+
+    if (isBoxOpen) {
+      //closeLockbox();
+      Navigator.pushAndRemoveUntil(
+      context,
+        MaterialPageRoute(
+          builder: (context) => CloseBoxPage(),
+        ),
+        (route) => false,
+      );
+    }
+    else if (isUserAuthenticated) {
+      // Perform actions after successful authentication
+      print('User is authenticated');
       openLockbox();
+      Navigator.pushAndRemoveUntil(
+      context,
+        MaterialPageRoute(
+          builder: (context) => CloseBoxPage(),
+        ),
+        (route) => false,
+      );
     } else {
-      print('Not authenticated');
+      // Handle unsuccessful authentication
+      print('User is not authenticated');
     }
   }
 
-  void openLockbox() async {
+  void openLockbox () async {
     final boxRef = database.child('box/');
     try {
-      await boxRef.update({
-        'isOpen': 1
+      await boxRef
+        .update({
+          'isOpen': 1
+        }
+      );
+      setState(() {
+        isBoxOpen = true;
       });
     } catch (e) {
       print(e);
     }
   }
+
+  // void closeLockbox () async {
+  //   final boxRef = database.child('box/');
+  //   try {
+  //     await boxRef
+  //       .update({
+  //         'isOpen': 0,
+  //         'isFull': 0
+  //       }
+  //     );
+  //     setState(() {
+  //       isBoxOpen = false;
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +115,7 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
                       });
                       
                       if (!hasBeenFulfilled[index]) {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => BiometricAuth(
