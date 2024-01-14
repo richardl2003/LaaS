@@ -15,19 +15,27 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ref = database.child('accounts/buyers');
+    final ref = database.child('accounts/buyers/');
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Status')
       ),
-      body: Container(
+      body: SizedBox (
         height: double.infinity,
         child: Expanded(
           child: FirebaseAnimatedList(
             query: ref,
             itemBuilder: (context, snapshot, animation, index) {
-              return ListTile(
-                title: Text(snapshot.value.toString())
+              return ListTile (
+                minVerticalPadding: 20,
+                title: Text("Order from user: " + snapshot.child('user').value.toString()),
+                subtitle: Text("Cost: \$" + snapshot.child('cost').value.toString() + "\nItems: " + snapshot.child('order').value.toString()),
+                trailing: MaterialButton(
+                  color: Colors.green.shade100,
+                  child: Text('Open', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  onPressed: () {}
+                ),
               );
             },
           ),
