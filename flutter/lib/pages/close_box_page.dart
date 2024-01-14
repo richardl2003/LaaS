@@ -29,12 +29,9 @@ class CloseBoxPage extends StatelessWidget {
               var isOpen = isOpenSnapshot.value;
               var isFull = isFullSnapshot.value;
 
-              print(isFull == 0 ? 0 : 1);
-              print(isOpen == 0 ? 0 : 1);
-
               await boxRef.update({
-                'isFull': isFull == 0 ? 0 : 1,
-                'isOpen': isOpen == 0 ? 0 : 1,
+                'isFull': isFull == 0 ? 1 : 0,
+                'isOpen': isOpen == 0 ? 1 : 0, // ADD TEMPERATURE
               });
             } catch (e) {
               print(e);

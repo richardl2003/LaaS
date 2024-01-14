@@ -1,8 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import '../pages/close_box_page.dart';
 
+import '../pages/close_box_page.dart';
 import '../components/biometric_auth.dart';
 
 
@@ -67,23 +67,6 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
       print(e);
     }
   }
-
-  // void closeLockbox () async {
-  //   final boxRef = database.child('box/');
-  //   try {
-  //     await boxRef
-  //       .update({
-  //         'isOpen': 0,
-  //         'isFull': 0
-  //       }
-  //     );
-  //     setState(() {
-  //       isBoxOpen = false;
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

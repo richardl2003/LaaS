@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:lock/models/cart_model.dart';
-import 'package:lock/pages/status_user_page.dart';
+import 'package:lock/pages/buyer_status_page.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user_model.dart';
@@ -112,7 +112,7 @@ class _CartPageState extends State<CartPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return StatusUserPage();
+                                return BuyerStatusPage();
                               }
                             )
                           );                          
