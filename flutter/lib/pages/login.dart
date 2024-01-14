@@ -20,38 +20,41 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(80.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'lib/images/lockbox_nobg.png', // Replace 'your_image.png' with your actual image asset path
-                height: 150, // Adjust the height as needed
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Welcome',
-                style: GoogleFonts.notoSerif(
-                    fontSize: 36, fontWeight: FontWeight.bold),
-              ),
-              TextFormField(
-                controller: _username,
-                decoration: const InputDecoration(
-                  hintText: 'Username',
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(80.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'lib/images/lockbox_nobg.png', // Replace 'your_image.png' with your actual image asset path
+                  height: 150, // Adjust the height as needed
                 ),
-              ),
-              TextFormField(
-                controller: _password,
-                decoration: const InputDecoration(
-                  hintText: 'Password',
+                const SizedBox(height: 20),
+                Text(
+                  'Welcome',
+                  style: GoogleFonts.notoSerif(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                obscureText: true,
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              GestureDetector(
+                TextFormField(
+                  controller: _username,
+                  decoration: const InputDecoration(
+                    hintText: 'Username',
+                  ),
+                ),
+                TextFormField(
+                  controller: _password,
+                  decoration: const InputDecoration(
+                    hintText: 'Password',
+                  ),
+                  obscureText: true,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                GestureDetector(
                   onTap: () {
                     if (_username.text.isNotEmpty &&
                         _password.text.isNotEmpty) {
@@ -73,14 +76,19 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                   child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(12)),
-                      padding: const EdgeInsets.all(24),
-                      child: const Text("Log in as buyer",
-                          style: TextStyle(color: Colors.white)))),
-              const SizedBox(height: 20),
-              GestureDetector(
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.all(24),
+                    child: const Text(
+                      "Log in as buyer",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                GestureDetector(
                   onTap: () {
                     if (_username.text.isNotEmpty &&
                         _password.text.isNotEmpty) {
@@ -102,13 +110,19 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                   child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(12)),
-                      padding: const EdgeInsets.all(24),
-                      child: const Text("Log in as seller",
-                          style: TextStyle(color: Colors.white))))
-            ],
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.all(24),
+                    child: const Text(
+                      "Log in as seller",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
