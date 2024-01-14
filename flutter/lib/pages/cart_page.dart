@@ -100,7 +100,8 @@ class _CartPageState extends State<CartPage> {
                             .update({
                               'user': name,
                               'order': orders,
-                              'cost': totalCost
+                              'cost': totalCost,
+                              'status': 'received'
                             }
                           );
                         } catch (e) {

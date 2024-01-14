@@ -1,6 +1,10 @@
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../components/biometric_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+import '../models/user_model.dart';
 
 class StatusUserPage extends StatefulWidget {
   @override
@@ -10,96 +14,50 @@ class StatusUserPage extends StatefulWidget {
 class _StatusUserPageState extends State<StatusUserPage> {
   final database = FirebaseDatabase.instance.ref();
 
-  bool isUserAuthenticated = false;
-  bool isBoxOpen = false;
-
-  void onAuthenticationComplete(bool isAuthenticated) {
-    setState(() {
-      isUserAuthenticated = isAuthenticated;
-    });
-
-    if (isBoxOpen) {
-      closeLockbox();
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StatusUserPage()));
-    }
-    else if (isUserAuthenticated) {
-      // Perform actions after successful authentication
-      print('User is authenticated');
-      openLockbox();
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StatusUserPage()));
-    } else {
-      // Handle unsuccessful authentication
-      print('User is not authenticated');
-    }
-  }
-
-  void openLockbox () async {
-    final boxRef = database.child('box/');
-    try {
-      await boxRef
-        .update({
-          'isOpen': 1
-        }
-      );
-      setState(() {
-        isBoxOpen = true;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void closeLockbox () async {
-    final boxRef = database.child('box/');
-    try {
-      await boxRef
-        .update({
-          'isOpen': 0,
-          'isFull': 0
-        }
-      );
-      setState(() {
-        isBoxOpen = false;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
+  bool isButtonActive = false;
 
   @override
   Widget build(BuildContext context) {
+    final buyerRef = database.child('accounts/buyers/');
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Buyer Order Status'),
+        title: Text('Your orders'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (isBoxOpen)
-              ElevatedButton(
-                child: Text('Close Lockbox'),
-                onPressed: () {
-                  closeLockbox();
-                },
-              ),
-            if (!isBoxOpen)
-              ElevatedButton(
-                child: Text('Open Lockbox'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BiometricAuth(
-                        onAuthenticationComplete: onAuthenticationComplete,
+      body: Column(
+        children: [
+          Expanded(
+            child: FirebaseAnimatedList(
+              query: buyerRef.orderByKey(),
+              itemBuilder:(context, snapshot, animation, index) {
+                var userFromDatabase = snapshot.child('user').value.toString();
+                var orders = snapshot.child('order').value.toString();
+                var status = snapshot.child('status').value.toString();
+                var userFromApp = Provider.of<UserModel>(context, listen: false).username;
+                if (userFromDatabase == userFromApp) {
+                    return ListTile(
+                      title: Text(status.toUpperCase()),
+                      subtitle: Text("Items: " + orders),
+                      trailing: MaterialButton(
+                        color: Colors.green.shade100,
+                        onPressed: () {
+
+                        },
+                        child: const Text(
+                          'Open', 
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-          ],
-        ),
-      ),
+                    );
+                }
+                return Text("");
+              },
+            )
+          )
+        ]
+      )
     );
   }
 }
