@@ -16,17 +16,17 @@ class _StatusUserPageState extends State<StatusUserPage> {
   void onAuthenticationComplete(bool isAuthenticated) {
     setState(() {
       isUserAuthenticated = isAuthenticated;
-      isBoxOpen = !isBoxOpen;
     });
 
-    if (isUserAuthenticated) {
+    if (isBoxOpen) {
+      closeLockbox();
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StatusUserPage()));
+    }
+    else if (isUserAuthenticated) {
       // Perform actions after successful authentication
       print('User is authenticated');
       openLockbox();
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StatusUserPage()));
-      setState(() {
-        isBoxOpen = true;
-      });
     } else {
       // Handle unsuccessful authentication
       print('User is not authenticated');
@@ -41,6 +41,9 @@ class _StatusUserPageState extends State<StatusUserPage> {
           'isOpen': 1
         }
       );
+      setState(() {
+        isBoxOpen = true;
+      });
     } catch (e) {
       print(e);
     }
@@ -55,6 +58,9 @@ class _StatusUserPageState extends State<StatusUserPage> {
           'isFull': 0
         }
       );
+      setState(() {
+        isBoxOpen = false;
+      });
     } catch (e) {
       print(e);
     }
@@ -67,18 +73,31 @@ class _StatusUserPageState extends State<StatusUserPage> {
         title: Text('Buyer Order Status'),
       ),
       body: Center(
-        child: ElevatedButton(
-          child: Text(isBoxOpen ? 'Close Lockbox' : 'Open Lockbox'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BiometricAuth(
-                  onAuthenticationComplete: onAuthenticationComplete,
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (isBoxOpen)
+              ElevatedButton(
+                child: Text('Close Lockbox'),
+                onPressed: () {
+                  closeLockbox();
+                },
               ),
-            );
-          },
+            if (!isBoxOpen)
+              ElevatedButton(
+                child: Text('Open Lockbox'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BiometricAuth(
+                        onAuthenticationComplete: onAuthenticationComplete,
+                      ),
+                    ),
+                  );
+                },
+              ),
+          ],
         ),
       ),
     );
