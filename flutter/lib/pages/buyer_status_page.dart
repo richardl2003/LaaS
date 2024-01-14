@@ -1,5 +1,6 @@
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:lock/models/temperature_model.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -101,13 +102,14 @@ class _BuyerStatusPageState extends State<BuyerStatusPage> {
               query: buyerRef.orderByKey(),
               itemBuilder:(context, snapshot, animation, index) {
                 var userFromDatabase = snapshot.child('user').value.toString();
-                var orders = snapshot.child('order').value.toString();
+                List<Object?> orders = snapshot.child('order').value as List<Object?>;
                 var status = snapshot.child('status').value.toString();
                 var userFromApp = Provider.of<UserModel>(context, listen: false).username;
                 if (userFromDatabase == userFromApp) {
+                    TemperatureModel().checkOrderTemp(orders);
                     return ListTile(
                       title: Text(status.toUpperCase()),
-                      subtitle: Text("Items: " + orders),
+                      subtitle: Text("Items: " + orders.toString()),
                       trailing: MaterialButton(
                         color: Colors.green.shade100,
                         onPressed: () {
