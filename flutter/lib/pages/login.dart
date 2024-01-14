@@ -13,7 +13,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   TextEditingController _username = TextEditingController();
   TextEditingController _password = TextEditingController();
 
@@ -26,12 +25,15 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.asset(
+                'lib/images/lockbox_nobg.png', // Replace 'your_image.png' with your actual image asset path
+                height: 150, // Adjust the height as needed
+              ),
+              const SizedBox(height: 20),
               Text(
                 'Welcome',
                 style: GoogleFonts.notoSerif(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold
-                ),
+                    fontSize: 36, fontWeight: FontWeight.bold),
               ),
               TextFormField(
                 controller: _username,
@@ -50,81 +52,62 @@ class _LoginPageState extends State<LoginPage> {
                 height: 24,
               ),
               GestureDetector(
-                onTap: () {
-                  if (_username.text.isNotEmpty && _password.text.isNotEmpty) {
-                    Provider.of<UserModel>(context, listen: false).editUsername(_username.text);
-                    Provider.of<UserModel>(context, listen: false).editPassword(_password.text);
-                    Provider.of<UserModel>(context, listen: false).editTypeOfUser("buyer");
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const HomePage();
-                        }
-                      )
-                    );
-                  } else {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const LoginPage();
-                        }
-                      )
-                    );                    
-                  }
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(12)
-                  ),
-                  padding: const EdgeInsets.all(24),
-                  child: const Text(
-                    "Log in as buyer",
-                    style: TextStyle(color: Colors.white)
-                  )
-                )                
-              ),
-
+                  onTap: () {
+                    if (_username.text.isNotEmpty &&
+                        _password.text.isNotEmpty) {
+                      Provider.of<UserModel>(context, listen: false)
+                          .editUsername(_username.text);
+                      Provider.of<UserModel>(context, listen: false)
+                          .editPassword(_password.text);
+                      Provider.of<UserModel>(context, listen: false)
+                          .editTypeOfUser("buyer");
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const HomePage();
+                      }));
+                    } else {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const LoginPage();
+                      }));
+                    }
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.all(24),
+                      child: const Text("Log in as buyer",
+                          style: TextStyle(color: Colors.white)))),
               const SizedBox(height: 20),
               GestureDetector(
-                onTap: () {
-                  if (_username.text.isNotEmpty && _password.text.isNotEmpty) {
-                    Provider.of<UserModel>(context, listen: false).editUsername(_username.text);
-                    Provider.of<UserModel>(context, listen: false).editPassword(_password.text);
-                    Provider.of<UserModel>(context, listen: false).editTypeOfUser("seller");
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const SellerStatusPage();
-                        }
-                      )
-                    );
-                  } else {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const LoginPage();
-                        }
-                      )
-                    );                    
-                  }
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(12)
-                  ),
-                  padding: const EdgeInsets.all(24),
-                  child: const Text(
-                    "Log in as seller",
-                    style: TextStyle(color: Colors.white)
-                  )
-                )                
-              )              
+                  onTap: () {
+                    if (_username.text.isNotEmpty &&
+                        _password.text.isNotEmpty) {
+                      Provider.of<UserModel>(context, listen: false)
+                          .editUsername(_username.text);
+                      Provider.of<UserModel>(context, listen: false)
+                          .editPassword(_password.text);
+                      Provider.of<UserModel>(context, listen: false)
+                          .editTypeOfUser("seller");
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const SellerStatusPage();
+                      }));
+                    } else {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return const LoginPage();
+                      }));
+                    }
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.all(24),
+                      child: const Text("Log in as seller",
+                          style: TextStyle(color: Colors.white))))
             ],
           ),
         ),
