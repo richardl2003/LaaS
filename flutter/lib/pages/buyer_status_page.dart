@@ -4,8 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import '../components/biometric_auth.dart';
+import '../models/cart_model.dart';
 import '../models/user_model.dart';
 import '../pages/close_box_page.dart';
+import 'login.dart';
 
 class BuyerStatusPage extends StatefulWidget {
   @override
@@ -75,6 +77,22 @@ class _BuyerStatusPageState extends State<BuyerStatusPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Your orders'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Provider.of<CartModel>(context, listen: false).emptyCart();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const LoginPage();
+                  }
+                )
+              );
+            },
+            icon: const Icon(Icons.logout)
+          )
+        ]        
       ),
       body: Column(
         children: [

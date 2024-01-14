@@ -1,9 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../models/cart_model.dart';
 import '../pages/close_box_page.dart';
 import '../components/biometric_auth.dart';
+import 'login.dart';
 
 
 class SellerStatusPage extends StatefulWidget {
@@ -75,7 +78,22 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Status')
+        title: const Text('Status'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const LoginPage();
+                  }
+                )
+              );
+            },
+            icon: const Icon(Icons.logout)
+          )          
+        ]
       ),
       body: Column (
           children: [
