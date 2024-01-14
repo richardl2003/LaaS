@@ -1,4 +1,3 @@
-// status_user_page.dart
 import 'package:flutter/material.dart';
 import '../components/biometric_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -12,16 +11,22 @@ class _StatusUserPageState extends State<StatusUserPage> {
   final database = FirebaseDatabase.instance.ref();
 
   bool isUserAuthenticated = false;
+  bool isBoxOpen = false;
 
   void onAuthenticationComplete(bool isAuthenticated) {
     setState(() {
       isUserAuthenticated = isAuthenticated;
+      isBoxOpen = !isBoxOpen;
     });
 
-    if (isAuthenticated) {
+    if (isUserAuthenticated) {
       // Perform actions after successful authentication
       print('User is authenticated');
       openLockbox();
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StatusUserPage()));
+      setState(() {
+        isBoxOpen = true;
+      });
     } else {
       // Handle unsuccessful authentication
       print('User is not authenticated');
@@ -41,15 +46,29 @@ class _StatusUserPageState extends State<StatusUserPage> {
     }
   }
 
+  void closeLockbox () async {
+    final boxRef = database.child('box/');
+    try {
+      await boxRef
+        .update({
+          'isOpen': 0,
+          'isFull': 0
+        }
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Status User Page'),
+        title: Text('Buyer Order Status'),
       ),
       body: Center(
         child: ElevatedButton(
-          child: Text('Open Lockbox'),
+          child: Text(isBoxOpen ? 'Close Lockbox' : 'Open Lockbox'),
           onPressed: () {
             Navigator.push(
               context,
