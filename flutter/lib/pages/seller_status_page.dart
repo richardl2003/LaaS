@@ -13,33 +13,49 @@ class SellerStatusPage extends StatefulWidget {
 class _SellerStatusPageState extends State<SellerStatusPage> {
   final database = FirebaseDatabase.instance.ref();
 
+  // bool hasBeenFulfilled = false;
+  List<bool> hasBeenFulfilled = List.generate(25, (index) => false);
+
   @override
   Widget build(BuildContext context) {
-    final ref = database.child('accounts/buyers/');
+    final buyerRef = database.child('accounts/buyers/');
     
     return Scaffold(
       appBar: AppBar(
         title: const Text('Status')
       ),
-      body: SizedBox (
-        height: double.infinity,
-        child: Expanded(
-          child: FirebaseAnimatedList(
-            query: ref,
-            itemBuilder: (context, snapshot, animation, index) {
-              return ListTile (
-                minVerticalPadding: 20,
-                title: Text("Order from user: " + snapshot.child('user').value.toString()),
-                subtitle: Text("Cost: \$" + snapshot.child('cost').value.toString() + "\nItems: " + snapshot.child('order').value.toString()),
-                trailing: MaterialButton(
-                  color: Colors.green.shade100,
-                  child: Text('Open', style: const TextStyle(fontWeight: FontWeight.bold)),
-                  onPressed: () {}
-                ),
-              );
-            },
-          ),
-        )
+      body: Column (
+          children: [
+            Expanded(
+            child: FirebaseAnimatedList(
+              query: buyerRef,
+              itemBuilder: (context, snapshot, animation, index) {
+                var user = snapshot.child('user').value.toString();
+                var cost = snapshot.child('cost').value.toString();
+                var orders = snapshot.child('order').value.toString();
+                return ListTile (
+                  minVerticalPadding: 20,
+                  title: Text("Order from: " + user.toString()),
+                  subtitle: Text("Cost: \$" + cost.toString() + "\nItems: " + orders.toString()),
+                  trailing: MaterialButton(
+                    color: hasBeenFulfilled[index] ? Colors.green.shade100 : Colors.orange.shade100,
+                    onPressed: () {
+                      setState(() {
+                        hasBeenFulfilled[index] = !hasBeenFulfilled[index];
+                      });
+                    },
+                    child: Text(
+                      hasBeenFulfilled[index] ? 'Open': 'Fulfill', 
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
+        ]
       )
     );
   }
