@@ -97,7 +97,7 @@ class _CartPageState extends State<CartPage> {
                         try {
                           await buyerRef
                             .push()
-                            .set({
+                            .update({
                               'user': name,
                               'order': orders,
                               'cost': totalCost
