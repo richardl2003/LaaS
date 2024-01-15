@@ -106,7 +106,6 @@ class _BuyerStatusPageState extends State<BuyerStatusPage> {
                 var status = snapshot.child('status').value.toString();
                 var userFromApp = Provider.of<UserModel>(context, listen: false).username;
                 if (userFromDatabase == userFromApp) {
-                    TemperatureModel().checkOrderTemp(orders);
                     return ListTile(
                       title: Text(status.toUpperCase()),
                       subtitle: Text("Items: " + orders.toString()),

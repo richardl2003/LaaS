@@ -17,12 +17,15 @@ class TemperatureModel {
   get foodTempMappings => foodTemps;
 
   int checkOrderTemp(List<Object?> order) {
-    for (Object? o in order) {
-      
+    bool allChicken = order.every((item) => item.toString().toLowerCase() == 'chicken');
+    bool allWater = order.every((item) => item.toString().toLowerCase() == 'water');
+
+    if (allChicken) {
+      return 1;
+    } else if (allWater) {
+      return -1;
+    } else {
+      return 0;
     }
   }
-
-
-
-
 }

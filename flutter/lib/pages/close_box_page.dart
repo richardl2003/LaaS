@@ -1,6 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:lock/pages/seller_status_page.dart';
+import 'package:provider/provider.dart';
+
+import '../pages/buyer_status_page.dart';
+import '../models/user_model.dart';
 
 class CloseBoxPage extends StatelessWidget {
   final DatabaseReference _database = FirebaseDatabase.instance.ref();
@@ -36,13 +40,26 @@ class CloseBoxPage extends StatelessWidget {
             } catch (e) {
               print(e);
             }
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SellerStatusPage(),
-              ),
-              (route) => false,
-            );
+
+            if (Provider.of<UserModel>(context, listen: false).typeOfUser == 'seller') {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SellerStatusPage(),
+                  ),
+                  (route) => false,
+                );
+            } else if (Provider.of<UserModel>(context, listen: false).typeOfUser == 'buyer') {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BuyerStatusPage(),
+                ),
+                (route) => false,
+              );
+            } else {
+              print('User is not authenticated');
+            }
           },
           child: Text('Close Lockbox'),
         ),

@@ -3,6 +3,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/temperature_model.dart';
 import '../models/cart_model.dart';
 import '../pages/close_box_page.dart';
 import '../components/biometric_auth.dart';
@@ -21,6 +22,7 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
 
   bool isUserAuthenticated = false;
   bool isBoxOpen = false;
+  int temperature = 0;
   List<bool> hasBeenFulfilled = List.generate(25, (index) => false);
 
   void onAuthenticationComplete(bool isAuthenticated) {
@@ -56,11 +58,13 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
   }
 
   void openLockbox () async {
+    print(temperature);
     final boxRef = database.child('box/');
     try {
       await boxRef
         .update({
-          'isOpen': 1
+          'isOpen': 1,
+          'temperature': temperature
         }
       );
       setState(() {
@@ -103,7 +107,7 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
               itemBuilder: (context, snapshot, animation, index) {
                 var user = snapshot.child('user').value.toString();
                 var cost = snapshot.child('cost').value.toString();
-                var orders = snapshot.child('order').value.toString();
+                List<Object?> orders = snapshot.child('order').value as List<Object?>;
                 return ListTile (
                   minVerticalPadding: 20,
                   title: Text("Order from: " + user.toString()),
@@ -113,6 +117,7 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
                     onPressed: () {
                       setState(() {
                         hasBeenFulfilled[index] = !hasBeenFulfilled[index];
+                        temperature = TemperatureModel().checkOrderTemp(orders);
                       });
                       
                       if (!hasBeenFulfilled[index]) {
